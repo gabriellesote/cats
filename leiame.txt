@@ -1,0 +1,5 @@
+ [Todos os comandos rodados dentro do projeto]
+
+ npm init -y
+ npm i dotenv express mongoose multer
+ npm i -D nodemon
