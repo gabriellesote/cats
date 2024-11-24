@@ -10,14 +10,14 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      =  "mongodb+srv://gabi:gabi@cats.6eihj.mongodb.net/cats?retryWrites=true&w=majority&appName=cats"
 }
 
 
 
 model Midia {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name   String
+  name   String?
   src    String
   type   String?
   description String?
