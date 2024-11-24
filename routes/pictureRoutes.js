@@ -7,7 +7,7 @@ import {
   deletePic
 } from "../controllers/pictureController.js";
 import upload from "../config/multer.js";
-import { generateToken, validateToken } from "../config/token_gen.js";
+import { generateToken, validateToken} from "../config/token_gen.js";
 
 const router = express.Router();
 
@@ -33,6 +33,7 @@ router.delete("/:id", validateToken, deletePic);
 
 // Rota para gerar token
 router.post('/genToken', generateToken);
+
 
 // Rota para listar imagens - se desejado, pode ser pública, sem validação de token
 // router.post('/list', validateToken); // caso você queira também proteger essa rota com token

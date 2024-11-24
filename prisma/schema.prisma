@@ -22,8 +22,14 @@ model Midia {
   type   String?
   description String?
 }
-model ApiKey {
+model Token {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  key       String   @unique
+  token      String   @unique
   expiresAt DateTime
+}
+model RefreshToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
