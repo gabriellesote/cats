@@ -28,7 +28,7 @@ export const createPic = async (req, res) => {
 
 export const getPics = async (req, res) => {
   try{
-    const pic = await prisma.pic.findMany();
+    const pic = await prisma.midia.findMany();
     res.status(200).json(pic);
 
 
