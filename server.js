@@ -1,6 +1,7 @@
 import express from "express";
 import pictureRoutes from "./routes/pictureRoutes.js";
 import cors from "cors"
+import randomRoutes from "./routes/randomRoutes.js"
 
 
 const app = express();
@@ -9,7 +10,8 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use("/img",pictureRoutes)
+app.use("",pictureRoutes)
+app.use("/random",randomRoutes)
 app.use(cors());
 
  
