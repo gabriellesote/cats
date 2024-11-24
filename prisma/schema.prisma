@@ -22,3 +22,8 @@ model Midia {
   type   String?
   description String?
 }
+model ApiKey {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  key       String   @unique
+  expiresAt DateTime
+}
