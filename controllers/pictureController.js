@@ -3,36 +3,29 @@ const prisma = new PrismaClient();
 
 export const createPic = async (req, res) => {
   try {
-    const files = req.files || [];  // Garante que sempre tenhamos um array
+    // Certifique-se de enviar 'name' no corpo da requisição
+    const file = req.file;
+    const name = req.file.filename;
 
-    // Verifica se existem arquivos
-    if (files.length > 0) {
-      // Mapeia os arquivos e cria os registros no banco de dados
-      const pics = await Promise.all(
-        files.map(async (file) => {
-          const name = file.filename;
-          if (!name || !file) {
-            throw new Error("O arquivo é obrigatório");
-          }
-
-          return await prisma.midia.create({
-            data: {
-              name: name,
-              src: file.path.replace(/\\/g, "/"),  // Corrige caminho
-              type: file.mimetype,
-              description: req.body.description || "cute cat",  // Descrição padrão
-            },
-          });
-        })
-      );
-
-      return res.status(201).json({ pics, msg: "Imagens salvas com sucesso!" });
-    } else {
-      return res.status(400).json({ error: "Nenhum arquivo enviado." });
+    if (!name || !file) {
+      return res
+        .status(400)
+        .json({ error: "O campo 'name' e o arquivo são obrigatórios." });
     }
 
+    const newPic = await prisma.midia.create({
+      data: {
+        name: name,
+        src: file.path.replace(/\\/g, "/"), // Corrige o caminho para o formato correto
+        type: req.file.mimetype,
+        description: req.body.description || "", // Descrição opcional
+      },
+    });
+
+    res.status(201).json({ pic: newPic, msg: "Imagem salva com sucesso!" });
+
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({error: error.message });
   }
 };
 
@@ -146,5 +139,5 @@ export const deletePics = async (req, res) => {
 // };
 
 // // Chama a função
-// // deleteAllPics();
+// deleteAllPics();
  

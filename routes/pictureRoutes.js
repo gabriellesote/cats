@@ -11,7 +11,7 @@ import upload from "../config/multer.js";
 import { generateToken, validateToken} from "../config/token_gen.js";
 const router = express.Router();
 
-router.post("/upload", validateToken, upload.array("files", 10), createPic, (req, res) => {
+router.post("/upload", validateToken, upload.single("file"), createPic, (req, res) => {
   if (!req.files || req.files.length === 0) {
 
     return res.status(400).json({ error: "No files uploaded" });
