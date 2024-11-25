@@ -108,6 +108,43 @@ export const deletePic = async (req, res) => {
   }
 };
 
+export const deletePics = async (req, res) => {
+  try {
 
+    const { ids } = req.body; 
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ error: "Nenhum ID fornecido para exclusão." });
+    }
+    // Executa a exclusão em massa usando Prisma
+    await prisma.midia.deleteMany({
+      where: {
+        id: { in: ids },
+      },
+    });
+
+    res.status(200).json({ message: "Imagens deletadas com sucesso!" });
+  } catch (err) {
+    console.error(err); // Exibe o erro no console para debugging
+    res.status(400).json({ error: err.message });
+  }
+};
+
+
+
+// == PERIGO == PERIGO == PERIGO == PERIGO == PERIGO == PERIGO == PERIGO == PERIGO == PERIGO
+// DELETA TODAS AS IMAGENS DO BD
+
+// const deleteAllPics = async () => {
+//   try {
+//     // Deleta todas as imagens da tabela 'midia'
+//     await prisma.midia.deleteMany({});
+//     console.log("Todas as imagens foram deletadas com sucesso!");
+//   } catch (error) {
+//     console.error("Erro ao deletar as imagens:", error.message);
+//   }
+// };
+
+// // Chama a função
+// // deleteAllPics();
  
-

@@ -10,7 +10,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use("",pictureRoutes)
+app.use("/img",pictureRoutes)
 app.use("/random",randomRoutes)
 app.use(cors());
 
