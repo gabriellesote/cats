@@ -138,6 +138,5 @@ export const deletePics = async (req, res) => {
 //   }
 // };
 
-// // Chama a função
 // deleteAllPics();
  
