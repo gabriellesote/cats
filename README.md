@@ -17,7 +17,7 @@
 
 ## 🐈‍⬛Endpoints
 
-<h3> 💠 POST  -- Gerar Token   </h3>
+<h3> 🐾 POST  -- Gerar Token   </h3>
 
 <p>
   Para usar a aplicação, é necessário que forneca um Token no Header. E para gerar um token basta usar: 
@@ -27,14 +27,14 @@
  http://localhost:3000/img/genToken
   ``` 
 
-<h3> 💠 GET -- Listar todas as imagens  </h3>
+<h3> 🐾 GET -- Listar todas as imagens  </h3>
 
   ```  
  http://localhost:3000/img/
   ```
 
 
-<h3> 💠 GET -- Pegar apenas uma imagem  </h3>
+<h3> 🐾 GET -- Pegar apenas uma imagem  </h3>
 
   ```  
  http://localhost:3000/img/<id>
@@ -42,7 +42,7 @@
 
 
 
-<h3> 💠 POST -- Upload de imagem </h3>
+<h3> 🐾 POST -- Upload de imagem </h3>
 <p>
   Estou trabalhando para que possa ser upada 1 ou até 10 imagens
 </p>
@@ -52,7 +52,7 @@
   ```
 
 
-<h3> 💠 PUT -- Update de imagem  </h3>
+<h3> 🐾 PUT -- Update de imagem  </h3>
 <p>
   FUncionando por enquanto
 </p>
@@ -61,7 +61,7 @@
  http://localhost:3000/img/update/<id>
   ```
 
- <h3> 💠 DELETE -- Apagando imagem </h3>
+ <h3> 🐾 DELETE -- Apagando imagem </h3>
 <p>
   Funcionando por enquanto
 </p>
