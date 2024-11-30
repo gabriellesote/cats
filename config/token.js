@@ -31,7 +31,7 @@ export const generateToken = async (user) =>{
     const token = authHeader.split(' ')[1];
 
     // Verificar se o token é válido
-    const decoded = jwt.verify(token, SECRET_KEY);
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     // Anexar o payload decodificado ao objeto da requisição, se necessário
     req.user = decoded;
