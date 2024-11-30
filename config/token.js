@@ -1,54 +1,45 @@
 import jwt from "jsonwebtoken";
+
 import dotenv from "dotenv";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
 dotenv.config();
+
 const JWT_SECRET = process.env.JWT_SECRET || "gatinhos";
-// Defina isso no seu .env
-export const validateToken = (token) => {
+ 
+export const generateToken = async (user) =>{
+  const token =  await jwt.sign({
+     userId: user.id  
+   },
+   JWT_SECRET,
+   { expiresIn: '7d'}
+ );
+  
+ return token
+ }
+ 
+ 
+ export const validateToken = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return decoded; // Retorna os dados do token (ex: userId)
-  } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      throw new Error("Token expirado");
-    }
-    throw new Error("Token inválido");
-  }
-};
-
-export const createToken = async (user) => {
-  const expiresIn = "7d"; // Token válido por 7 dias
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn });
-  // 7 dias
-  return token ;
-};
-
-export const saveToken = async (token) => {
-  try {
+    const authHeader = req.headers.authorization;
     
-    const decoded = jwt.verify(token, JWT_SECRET);
+    // Verifique se o cabeçalho de autorização existe e tem o prefixo "Bearer "
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      
+      return res.status(401).json({ error: 'Token ausente ou malformado' });
+    }
 
-    // Buscar o usuário pelo ID do token decodificado
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-    });
+    // Extraímos o token do cabeçalho
+    const token = authHeader.split(' ')[1];
 
-    // Criar um novo token associado ao usuário
-    await prisma.token.create({
-      data: {
-        userId: user.id, // Usar user.id, e não o objeto completo `user`
-        accessToken: token.token, // Apenas o valor do token
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Definir a data de expiração
-      },
-    });
+    // Verificar se o token é válido
+    const decoded = jwt.verify(token, SECRET_KEY);
 
-    // Atualizar o usuário com o tokenId
+    // Anexar o payload decodificado ao objeto da requisição, se necessário
+    req.user = decoded;
 
-
-    console.log("Token salvo com sucesso!");
+    // Proseguir para a próxima etapa
+    next();  
   } catch (error) {
-    console.error("Erro ao salvar o token:", error.message);
-    throw error; // Lança o erro para ser tratado em outro lugar
+    console.log(error);
+    res.status(403).json({ error: 'Token inválido ou expirado', details: error.message });
   }
 };
