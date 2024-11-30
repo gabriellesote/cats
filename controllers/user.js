@@ -122,20 +122,19 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
 try{
-  const { email } = req.body;
+ 
   const deleteUser = await prisma.user.delete({
-    where: { email: email }
+    where: { id: req.params.id }
   });
 
-
-
-  res.status(200).json({ msg: "Usuário deletado com sucesso", deletedUser });
+ 
+  res.status(200).json({ msg: "Usuário deletado com sucesso", deleteUser});
 }
 catch(error){
 
-  if (error.code === "P2025") {
-    return res.status(404).json({ msg: "Usuário não encontrado" });
-  }
+  // if (error.code === "P2025") {
+  //   return res.status(404).json({ msg: "Usuário não encontrado" });
+  // }
 
   res.status(500).json({error, message: "Erro ao deletar" });
 }
@@ -148,16 +147,9 @@ catch(error){
 
 export const getUser = async (req, res) => {
   try{
-    const { email } = req.body;
+ 
 
-   
-
-    const user = await prisma.user.findUnique({where: {email: email}, select:{
-      id: true,
-      username: true,
-      email: true,
-      token: true,
-    }});
+    const user = await prisma.user.findMany()
 
     res.status(200).json({ user });
   } 
