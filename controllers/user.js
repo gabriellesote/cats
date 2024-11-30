@@ -96,22 +96,24 @@ export const login = async (req, res) => {
 // Endpoints para update e delete
 
 export const updateUser = async (req, res) => {
-  const { email } = req.body;
+ 
 
   try {
+   
     const user = await prisma.user.update({
-      where: { email: email },
+      where: { id: req.params.id },
       data: req.body,
     });
+    const { password: _, createdAt: __, token: ___, ...safeUser } = user;
 
-    res.status(200).json({ msg: "Update bem sucedio: ", user });
-  } catch (error) {
+    res.status(200).json({ msg: "Update bem sucedio: ", safeUser });
+  } 
+  
+  catch (error) {
     console.log(error);
-
     if (error.code === "P2025") {
       return res.status(404).json({ msg: "Usuário não encontrado" });
     }
-
     res.status(500).json({
       message: "Erro ao atualizar",
     });

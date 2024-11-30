@@ -22,7 +22,7 @@ export const generateToken = async (user) =>{
     const authHeader = req.headers.authorization;
     
     // Verifique se o cabeçalho de autorização existe e tem o prefixo "Bearer "
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith('Bearer')) {
       
       return res.status(401).json({ error: 'Token ausente ou malformado' });
     }
