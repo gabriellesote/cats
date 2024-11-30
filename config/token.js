@@ -43,3 +43,5 @@ export const generateToken = async (user) =>{
     res.status(403).json({ error: 'Token inválido ou expirado', details: error.message });
   }
 };
+
+
