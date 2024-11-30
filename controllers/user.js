@@ -147,8 +147,6 @@ catch(error){
 
 export const getUser = async (req, res) => {
   try{
- 
-
     const user = await prisma.user.findMany()
 
     res.status(200).json({ user });

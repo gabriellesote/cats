@@ -5,6 +5,6 @@ import {  validateToken} from "../config/token.js";
 const router = express.Router();
 
 // Rota para upload de várias imagens
-router.post('/uploadmany', upload.array('files', 25), manyPic, validateToken); // O nome do campo é 'files', pode ser alterado
+router.post('/uploadmany',validateToken, upload.array('files', 25), manyPic); // O nome do campo é 'files', pode ser alterado
 
 export default router;
