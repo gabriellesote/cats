@@ -5,15 +5,26 @@ const prisma = new PrismaClient();
 
 
 export const registerUser = async (req, res) => {
-  const { username, email, password } = req.body;
-
-  if (!username || !password || !email) {
-    return res
-      .status(400)
-      .json({ message: "Nome de usuário, email e senha são obrigatórios." });
-  }
+  
 
   try {
+    const { username, email, password } = req.body;
+
+    if (!username || !password || !email) {
+      return res
+        .status(400)
+        .json({ message: "Nome de usuário, email e senha são obrigatórios." });
+    }
+  
+    const existingUser = await prisma.user.findUnique({
+      where: { email: req.body.email },
+    });
+    
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email já cadastrado!' });
+    }
+
+
     const hashedPassword = await hashPassword(password);
     const newUser = await prisma.user.create({
       data: {
@@ -53,8 +64,9 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+
     const user = await prisma.user.findUnique({
-      where: { email: email },
+      where: {email },
     });
 
     if (!user) {
@@ -62,11 +74,16 @@ export const login = async (req, res) => {
     }
 
     const isValidPassword = await comparePassword(password, user.password);
-    if (!isPasswordValid) {
+
+    if (!isValidPassword) {
       return res.status(401).json({ msg: "Senha incorreta" });
     }
 
-    res.status(200).json({ msg: "Login bem-sucedido", user });
+    const { password: _, createdAt: __, token: ___, ...safeUser } = user;
+
+
+
+    res.status(200).json({ msg: "Login bem-sucedido", safeUser });
   } catch (error) {
     console.log(error);
     res.status(403).json({
@@ -124,4 +141,25 @@ catch(error){
 
 
 
+}
+
+
+export const getUser = async (req, res) => {
+  try{
+    const { email } = req.body;
+
+   
+
+    const user = await prisma.user.findUnique({where: {email: email}, select:{
+      id: true,
+      username: true,
+      email: true,
+      token: true,
+    }});
+
+    res.status(200).json({ user });
+  } 
+  catch(error){
+    res.status(500).json({error, message: "Erro ao buscar" });
+  }
 }
