@@ -26,10 +26,10 @@ router.post("/upload", upload.single("file"), createPic, (req, res) => {
   res.json({ message: "Files uploaded successfully", files: req.files });
 });
 
-router.get("", getPics,express.static(path.join(__dirname, "uploads")));
-router.get("/:id", validateToken, getPicsById, express.static(path.join(__dirname, "uploads")));
+router.get("/all", express.static(path.join(__dirname, "uploads")), getPics);
+router.get("/byid/:id", validateToken, getPicsById, express.static(path.join(__dirname, "uploads")));
 router.put("/update/:id", validateToken, upload.single("file"), updatePic);
-router.delete("/:id", validateToken, deletePic);
+router.delete("/delete/:id", validateToken, deletePic);
 router.post("/deletePics", validateToken, deletePics);
  
 
