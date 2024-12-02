@@ -10,6 +10,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-router.get("/img",validateToken, random, express.static(path.join(__dirname, "uploads")));
+router.get("/img", random, express.static(path.join(__dirname, "uploads")));
 
 export default router;
