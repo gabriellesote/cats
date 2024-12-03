@@ -12,7 +12,7 @@ export const manyPic = async (req, res) => {
     const files = req.files;
 
     // Limita a quantidade de imagens a 25
-    if (files.length > 25) {
+    if (files.length > 100) {
       return res.status(400).json({ error: "Você pode enviar no máximo 25 imagens." });
     }
 
